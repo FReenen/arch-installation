@@ -109,7 +109,7 @@ echo
 echo === install arch
 echo
 
-run "install base of arch"        "pacstrap /mnt base linux linux-frimware"
+run "install base of arch"        "pacstrap /mnt base linux linux-firmware"
 
 echo "generate fstab"
 genfstab -U /mnt >>/mnt/etc/fstab
