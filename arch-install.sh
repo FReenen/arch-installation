@@ -4,9 +4,9 @@ function run(){
     echo "# $1" >>install.log
     echo "> $2" >>install.log
     $2 &>>install.log \
-        && echo -e "\e[1A\e[K[ OK ] $1" \
+        && echo -e "\e[1A\e[K[ \e[32mOK\e[0m ] $1" \
         || { 
-            echo -e "\e[1A\e[K[FAIL] $1"
+            echo -e "\e[1A\e[K[\e[31mFAIL\e[0m] $1"
             $3
             exit
         }
