@@ -6,9 +6,9 @@ function run(){
     echo "# $1" >>install.log
     echo "> $2" >>install.log
     $2 &>>install.log \
-        && echo -e "\e[1A\e[K[ OK ] $1" \
+        && echo -e "\e[1A\e[K[ \e[32mOK\e[0m ] $1" \
         || { 
-            echo -e "\e[1A\e[K[FAIL] $1"
+            echo -e "\e[1A\e[K[\e[31mFAIL\e[0m] $1"
             $3
             exit
         }
@@ -32,7 +32,9 @@ echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
 
 run "generate initramfs"          "mkinitcpio -P" "return"
 
-run "create user"                 "useradd MReenen"
+run "add .ssh dir to skel"        "mkdir /etc/skel/.ssh"
+run "create user"                 "useradd mreenen"
+run "add sshkeys for new user"    "curl -o /home/mreenen/.ssh/authorized_keys https://github.com/MReenen.keys"
 
 run "install CRUB"                "pacman -S grub efibootmgr"
 run "create efi directory"        "mkdir /boot/efi"
