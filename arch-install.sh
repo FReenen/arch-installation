@@ -82,6 +82,7 @@ if [ "$PASS" != "$PASSRE" ]; then
   echo "password do not match"
   exit
 fi
+echo
 
 run "format boot partition"       "mkfs.fat ${DISK}1"
 run "format swap partition"       "mkswap ${DISK}2"
@@ -119,4 +120,4 @@ echo
 echo === chroot config
 echo
 
-arch-chroot /mnt "bash /root/in-root.sh"
+arch-chroot /mnt bash /root/in-root.sh
