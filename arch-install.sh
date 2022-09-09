@@ -113,4 +113,10 @@ run "install base of arch"        "pacstrap /mnt base linux linux-frimware"
 
 echo "generate fstab"
 genfstab -U /mnt >>/mnt/etc/fstab
-run "chroot"                      "arch-chroot /mnt"
+run "copy in-root script"         "cp in-root.sh /mnt/root"
+
+echo
+echo === chroot config
+echo
+
+arch-chroot /mnt "bash /root/in-root.sh"
