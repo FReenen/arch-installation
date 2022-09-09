@@ -33,7 +33,8 @@ echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
 run "generate initramfs"          "mkinitcpio -P" "return"
 
 run "add .ssh dir to skel"        "mkdir /etc/skel/.ssh"
-run "create user"                 "useradd mreenen"
+run "create user"                 "useradd --home-dir /home/mreenen --skel /etc/skel mreenen"
+run "touch authoized keys"        "touch /home/mreenen/.ssh/authorized_keys"
 run "add sshkeys for new user"    "curl -o /home/mreenen/.ssh/authorized_keys https://github.com/MReenen.keys"
 
 run "install CRUB"                "pacman -S grub efibootmgr"
