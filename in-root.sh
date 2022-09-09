@@ -1,3 +1,6 @@
+
+HOSTNAME="CoolhavenPC"
+
 function run(){
     echo "[    ] $1"
     echo "# $1" >>install.log
@@ -12,17 +15,24 @@ function run(){
      echo >>install.log
 }
 
+echo >install.log
 
-run "set timezone"                "timezonectl set-timezone Europe/Amsterdam"
+
+run "set timezone"                "ln -sf /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime"
+run "set hwclock to UTC"          "hwclock --systohc"
 run "generate locals"             "locale-gen"
 echo "config locals"
-echo "LANG=en_GB.UTF-8" >/etc/localse.conf
+echo "LANG=en_GB.UTF-8" >/etc/locale.conf
 run "set hostname"
 echo "$HOSTNAME" >/etc/hostname
 echo "create hosts file"
 echo "127.0.0.1     localhost"  >/etc/hosts
 echo "::1           localhost" >>/etc/hosts
 echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
+
+run "generate initramfs"          "mkinitpcio -P"
+
+run "create user"                 "useradd MReenen"
 
 run "install CRUB"                "pacman -S grub efibootmgr"
 run "create efi directory"        "mkdir /boot/efi"
