@@ -37,7 +37,7 @@ run "create user"                 "useradd --home-dir /home/mreenen --create-hom
 run "touch authoized keys"        "touch /home/mreenen/.ssh/authorized_keys"
 run "add sshkeys for new user"    "curl -o /home/mreenen/.ssh/authorized_keys https://github.com/MReenen.keys"
 
-run "install CRUB"                "pacman -S -noconfirm grub efibootmgr"
+run "install CRUB"                "pacman -S --noconfirm grub efibootmgr"
 run "create efi directory"        "mkdir /boot/efi"
 run "run grub-install"            "grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi"
 run "make grub config"            "grub-mkconfig -o /boot/grub/grub.cfg"
