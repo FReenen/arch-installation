@@ -40,8 +40,8 @@ echo
 
 # pacman -Sy
 # pacman -S git
-# git clone https://gist.github.com/038178626dd006a62e1ff4734d88694b.git
-# cd 038178626dd006a62e1ff4734d88694b
+# git clone https://github.com/MReenen/arch-instalation.git
+# cd arch-instalation
 
 echo === setup partitions
 
