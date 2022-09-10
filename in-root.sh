@@ -31,7 +31,7 @@ echo "127.0.0.1     localhost"  >/etc/hosts
 echo "::1           localhost" >>/etc/hosts
 echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
 
-run "config initramfs"            "sed --in-place -e 's/HOOKS=(.*)'/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/ /etc/mkinitcpio.conf"
+run "config initramfs"            "sed --in-place -e 's/HOOKS=(.*)/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/' /etc/mkinitcpio.conf"
 run "generate initramfs"          "mkinitcpio -P"
 
 DISKUUID=$(blkid --output export &{DISK}10 | grep PARTUUID | sed 's/PARTUUID=//')
