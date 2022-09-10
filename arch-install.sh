@@ -1,4 +1,7 @@
 
+HOSTNAME="CoolhavenPC"
+DISK="/dev/sda"
+
 function run(){
     echo "[    ] $1"
     echo "# $1" >>install.log
@@ -21,7 +24,6 @@ echo "" >install.log
 # ENDEV=enp1s1
 # IP=1.2.3.4/24
 # GATEWAY=1.2.3.1
-HOSTNAME="CoolhavenPC"
 
 # ip addr add $IP dev $ENDEV
 # ip route add default via $GATEWAY dev $ENDEV
@@ -44,8 +46,6 @@ echo
 # cd arch-instalation
 
 echo === setup partitions
-
-DISK="/dev/sda"
 
 # fdisk $DISK
 #   g
@@ -110,8 +110,8 @@ echo
 echo === install arch
 echo
 
-run "install base of arch"        "pacstrap /mnt base linux linux-firmware"
-run "intall utitlities"           "pacstrap /mnt btrfs-progs"
+run "install base of arch"        "pacstrap /mnt base linux linux-firmware grub efibootmgr"
+run "intall utitlities"           "pacstrap /mnt btrfs-progs man vim"
 
 echo "generate fstab"
 genfstab -U /mnt >>/mnt/etc/fstab
@@ -121,4 +121,4 @@ echo
 echo === chroot config
 echo
 
-arch-chroot /mnt bash /root/in-root.sh
+arch-chroot /mnt bash /root/in-root.sh "$HOSTNAME" "$DISK"
