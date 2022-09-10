@@ -30,7 +30,7 @@ echo "127.0.0.1     localhost"  >/etc/hosts
 echo "::1           localhost" >>/etc/hosts
 echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
 
-run "generate initramfs"          "mkinitcpio -P" "return"
+run "generate initramfs"          "mkinitcpio -P"
 
 run "add .ssh dir to skel"        "mkdir /etc/skel/.ssh"
 run "create user"                 "useradd --home-dir /home/mreenen --create-home --skel /etc/skel mreenen"
