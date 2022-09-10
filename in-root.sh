@@ -1,5 +1,6 @@
 
-HOSTNAME="CoolhavenPC"
+HOSTNAME="$1"
+DISK="$2"
 
 function run(){
     echo "[    ] $1"
@@ -30,13 +31,16 @@ echo "127.0.0.1     localhost"  >/etc/hosts
 echo "::1           localhost" >>/etc/hosts
 echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
 
+run "config initramfs"            "sed --in-place -e 's/HOOKS=(.*)'/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/ /etc/mkinitcpio.conf"
 run "generate initramfs"          "mkinitcpio -P"
+
+DISKUUID=$(blkid --output export &{DISK}10 | grep PARTUUID | sed 's/PARTUUID=//')
+run "run grub-install"            "grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot"
+run "grub: enable crypt disk"     "sed --in-place -E -e 's/#?GRUB_ENABLE_CRYPTODISK=(.*)/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub"
+run "grub: crypt disk map"        "sed --in-place -E -e 's/#?GRUB_CMDLINE_LINUX=\"?(.*)\"?/GRUB_CMDLINE_LINUX=\"${DISKUUID}:cryptroot \1\"/' /etc/default/grub"
+run "make grub config"            "grub-mkconfig -o /boot/grub/grub.cfg"
 
 run "add .ssh dir to skel"        "mkdir /etc/skel/.ssh"
 run "create user"                 "useradd --home-dir /home/mreenen --create-home --skel /etc/skel mreenen"
 run "touch authoized keys"        "touch /home/mreenen/.ssh/authorized_keys"
 run "add sshkeys for new user"    "curl -o /home/mreenen/.ssh/authorized_keys https://github.com/MReenen.keys"
-
-run "install CRUB"                "pacman -S --noconfirm grub efibootmgr"
-run "run grub-install"            "grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi"
-run "make grub config"            "grub-mkconfig -o /boot/grub/grub.cfg"
