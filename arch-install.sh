@@ -111,6 +111,7 @@ echo === install arch
 echo
 
 run "install base of arch"        "pacstrap /mnt base linux linux-firmware"
+run "intall utitlities"           "pacstrap /mnt btrfs-progs"
 
 echo "generate fstab"
 genfstab -U /mnt >>/mnt/etc/fstab
