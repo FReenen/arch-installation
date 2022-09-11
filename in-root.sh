@@ -37,7 +37,7 @@ run "generate initramfs"          "mkinitcpio -P"
 DISKUUID=$(blkid --output export ${DISK}10 | grep PARTUUID | sed 's/PARTUUID=//')
 run "run grub-install"            "grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot"
 run "grub: enable crypt disk"     "sed --in-place -E -e 's/#?GRUB_ENABLE_CRYPTODISK=(.*)/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub"
-run "grub: crypt disk map"        "sed --in-place -E -e 's/#?GRUB_CMDLINE_LINUX=\\\"?(.*)\\\"?/GRUB_CMDLINE_LINUX=\\\"/dev/disk/by-uuid/${DISKUUID}:cryptroot \\\1\\\"/' /etc/default/grub"
+run "grub: crypt disk map"        "sed --in-place -E -e 's/#?GRUB_CMDLINE_LINUX=\\\"?(.*)\\\"?/GRUB_CMDLINE_LINUX=\\\"/dev/disk/by-uuid/${DISKUUID}:cryptroot \1\\\"/' /etc/default/grub"
 run "make grub config"            "grub-mkconfig -o /boot/grub/grub.cfg"
 
 run "add .ssh dir to skel"        "mkdir /etc/skel/.ssh"
