@@ -6,11 +6,11 @@ function run(){
     echo "[    ] $1"
     echo "# $1" >>install.log
     echo "> $2" >>install.log
-    $2 &>>install.log \
+    bash -c "$2" &>>install.log \
         && echo -e "\e[1A\e[K[ \e[32mOK\e[0m ] $1" \
         || { 
             echo -e "\e[1A\e[K[\e[31mFAIL\e[0m] $1"
-            $3
+            bash -c "$3"
             exit
         }
      echo >>install.log
