@@ -34,7 +34,7 @@ echo "127.0.1.1     $HOSTNAME" >>/etc/hosts
 run "config initramfs"            "sed --in-place -e 's/HOOKS=(.*)/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/' /etc/mkinitcpio.conf"
 run "generate initramfs"          "mkinitcpio -P"
 
-DISKUUID=$(blkid --output export ${DISK}10 | grep PARTUUID | sed 's/PARTUUID=//')
+DISKUUID=$(blkid --output export ${DISK}10 | grep '^UUID' | sed 's/UUID=//')
 run "run grub-install"            "grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot"
 run "grub: enable crypt disk"     "sed --in-place -E -e 's/#?GRUB_ENABLE_CRYPTODISK=(.*)/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub"
 run "grub: crypt disk map"        "sed --in-place -E -e 's/#?GRUB_CMDLINE_LINUX=(.*)&/GRUB_CMDLINE_LINUX=\\\"\/dev\/disk\/by-uuid\/${DISKUUID}:cryptroot \1\\\"/' /etc/default/grub"
